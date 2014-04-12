@@ -32,4 +32,3 @@ permissions:
     children:
     - organizations.player.modify.info
     - organizations.player.modify.relations
-    
