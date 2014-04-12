@@ -159,7 +159,7 @@ public class CommandHandler implements CommandExecutor{
 									String orgName = args[1].toLowerCase();
 									if (orgName.length()>plugin.getConfig().getInt("config.ORGNAME_MIN_LENGTH") && orgName.length()<plugin.getConfig().getInt("config.ORGNAME_MAX_LENGTH") && orgName.matches("^[A-Za-z_]{1,}$")){
 										if (!plugin.getConfig().contains("organizations."+orgName)){
-											plugin.getConfig().set("organizations."+orgName+".owner", p.getUniqueId());
+											plugin.getConfig().set("organizations."+orgName+".owner", p.getUniqueId().toString());
 											plugin.getConfig().set("organizations."+orgName+".groups.admin.players", Arrays.asList(p.getUniqueId().toString()));
 											plugin.getConfig().set("organizations."+orgName+".groups.moderator.players", Arrays.asList());
 											plugin.getConfig().set("organizations."+orgName+".tag", orgName);
@@ -167,7 +167,7 @@ public class CommandHandler implements CommandExecutor{
 											plugin.getConfig().set("organizations."+orgName+".funds", 0.0);
 											plugin.getConfig().set("organizations."+orgName+".relations", "");
 											plugin.getConfig().set("organizations."+orgName+".invited", new ArrayList<String>());
-											plugin.getConfig().set("organizations."+orgName+".players", Arrays.asList(p.getUniqueId()));
+											plugin.getConfig().set("organizations."+orgName+".players", Arrays.asList(p.getUniqueId().toString()));
 											plugin.getConfig().set("organizations."+orgName+".research", new ArrayList<String>());
 											plugin.saveConfig();
 											return CommandOutput.SUCCESS;
