@@ -1,0 +1,16 @@
+config:
+  ORGNAME_MIN_LENGTH: 2
+  ORGNAME_MAX_LENGTH: 20
+organizations:
+  template:
+    owner: noone
+    groups:
+      admin:
+        players: {}
+        permissions: 
+        - edit.*
+      tag: TemplateOrg
+      desc: This is a template organization. Ignore me.
+      funds: 0.0
+      relations: ''
+      

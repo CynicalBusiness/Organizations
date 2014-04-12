@@ -1,0 +1,14 @@
+name: Organizations
+version: 01.00.00
+main: me.capit.Organizations.Organizations
+
+website: https://github.com/Wehttam664/Organizations/wiki
+description: GameData_Organizations
+author: Wehttam664
+preix: Organizations
+
+commands:
+  organization:
+    description: 'Organizations Core Command'
+    aliases: org
+    usage: 'Syntax Issue. Try /org help'
