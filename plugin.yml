@@ -12,3 +12,24 @@ commands:
     description: 'Organizations Core Command'
     aliases: org
     usage: 'Syntax Issue. Try /org help'
+    
+permissions:
+  organizations.*:
+    description: 'Global Organizations permission.'
+  organizations.player.*:
+    description: 'Organizations'' player permissions.'
+    default: true
+    children:
+    - organizations.player.help
+    - organizations.player.list
+    - organizations.player.create
+    - organizations.player.join
+    - organizations.player.leave
+    - organizations.player.modify.*
+    - organizations.player.fortify
+  organizations.player.modify.*:
+    description: 'Permission for modifying portions of an Organization'
+    children:
+    - organizations.player.modify.info
+    - organizations.player.modify.relations
+    
