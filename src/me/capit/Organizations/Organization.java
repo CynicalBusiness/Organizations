@@ -343,7 +343,10 @@ public class Organization {
 		for (String id : ps){
 			Player p = Bukkit.getServer().getPlayer(UUID.fromString(id));
 			if (p!=null){
-				ops.add(p.getUniqueId().toString());
+				Player[] online = Bukkit.getServer().getOnlinePlayers();
+				for (Player plyr : online){
+					if (plyr==p) ops.add(p.getUniqueId().toString());
+				}
 			}
 		}
 		return ops;
