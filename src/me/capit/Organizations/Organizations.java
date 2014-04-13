@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Organizations extends JavaPlugin {
-	public static final String head = "&8&l||================|[&eOrganizations&8&l]|================||&r";
+	public static final String head = "&8&l||==============|[&eOrganizations&8&l]|==============||&r";
 	public static final String tag = "&8&l[&eOrgs&8&l]&7 ";
 	public static String version = "";
 	public static Logger logger;

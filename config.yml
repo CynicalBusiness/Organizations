@@ -6,11 +6,9 @@ organizations:
     owner: noone
     groups:
       admin:
-        players: {}
-        permissions: 
-        - edit.*
-      tag: TemplateOrg
-      desc: This is a template organization. Ignore me.
-      funds: 0.0
-      relations: ''
+        players: []
+    tag: TemplateOrg
+    desc: This is a template organization. Ignore me.
+    funds: 0.0
+    relations: ''
       

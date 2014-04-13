@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 public class Organization {
@@ -33,8 +35,8 @@ public class Organization {
 	public static Organization getOrganizationByPlayer(FileConfiguration cfg, UUID player, Plugin plug){
 		Organization org = null;
 		for (String key : cfg.getConfigurationSection("organizations").getKeys(false)){
-			System.out.println("Tried to match "+player+" to organization "+key+".");
-			if (cfg.getStringList("organizations."+key+".players").contains(player)){
+			System.out.println("Tried to match "+player.toString()+" to organization "+key+".");
+			if (cfg.getStringList("organizations."+key+".players").contains(player.toString())){
 				System.out.println("Match found! ("+key+")");
 				org = new Organization(cfg, key);
 				plug.saveConfig();
@@ -193,13 +195,19 @@ public class Organization {
 	}
 	
 	public boolean isAdmin(UUID pname){
-		List<String> players = groups.get("admin").getStringList("players");
-		if (players != null){
-			if (players.contains(pname.toString())){
-				return true;
-			}
-		} 
-		return false;
+		ConfigurationSection admin = groups.get("admin");
+		if (admin!=null){
+			List<String> players = admin.getStringList("players");
+			if (players != null){
+				if (players.contains(pname.toString())){
+					return true;
+				}
+			} 
+			return false;
+		} else {
+			System.out.println("Group ADMIN was null for "+name+"!");
+			return false;
+		}
 	}
 	
 	public boolean isOwner(UUID pname){
@@ -209,6 +217,10 @@ public class Organization {
 		} else {
 			return false;
 		}
+	}
+	
+	public String getOwner(){
+		return cfg.getString("organizations."+getName()+".owner");
 	}
 	
 	/*public boolean addGroupPermission(String group, String permission){
@@ -323,6 +335,18 @@ public class Organization {
 
 	public List<String> getPlayers() {
 		return players;
+	}
+	
+	public List<String> getOnlinePlayers() {
+		List<String> ps = getPlayers();
+		List<String> ops = new ArrayList<String>();
+		for (String id : ps){
+			Player p = Bukkit.getServer().getPlayer(UUID.fromString(id));
+			if (p!=null){
+				ops.add(p.getUniqueId().toString());
+			}
+		}
+		return ops;
 	}
 	
 	public List<String> getInvited() {

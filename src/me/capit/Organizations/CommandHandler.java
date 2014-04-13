@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import me.capit.Organizations.Organization;
 import me.capit.Organizations.ProtectionHandler;
@@ -202,6 +203,8 @@ public class CommandHandler implements CommandExecutor{
 											org.setTag(args[2]);
 											org.writeDataToDisk(org.getName());
 											plugin.saveConfig();
+											p.sendMessage(ChatColor.translateAlternateColorCodes(
+													'&', Organizations.tag+" Successfully set tag to "+args[2]+"."));
 											return CommandOutput.SUCCESS;
 										} else {
 											return CommandOutput.BAD_ARG;
@@ -228,6 +231,8 @@ public class CommandHandler implements CommandExecutor{
 										org.setDesc(desc);
 										org.writeDataToDisk(org.getName());
 										plugin.saveConfig();
+										p.sendMessage(ChatColor.translateAlternateColorCodes(
+												'&', Organizations.tag+" Successfully set description."));
 										return CommandOutput.SUCCESS;
 									} else {
 										return CommandOutput.NO_ORG_PERMISSION;
@@ -389,6 +394,8 @@ public class CommandHandler implements CommandExecutor{
 								String oname = org.getName();
 								plugin.getConfig().set("organizations."+oname, null);
 								plugin.saveConfig();
+								p.sendMessage(ChatColor.translateAlternateColorCodes(
+										'&', Organizations.tag+" Successfully &cdisbanded &7your organization."));
 								return CommandOutput.SUCCESS;
 							} else {
 								return CommandOutput.NO_ORG_PERMISSION;
@@ -407,7 +414,7 @@ public class CommandHandler implements CommandExecutor{
 								if (org.isAdmin(p.getUniqueId()) || org.isMod(p.getUniqueId())){
 									String inv = args[1];
 									Player pinv = plugin.getServer().getPlayer(inv);
-									if (!org.getPlayers().contains(inv) && !org.getInvited().contains(inv)){
+									if (!org.getPlayers().contains(pinv.getUniqueId().toString()) && !org.getInvited().contains(pinv.getUniqueId().toString())){
 										org.addInvited(pinv.getUniqueId());
 										plugin.saveConfig();
 										p.sendMessage(ChatColor.translateAlternateColorCodes('&', Organizations.tag+"Successfully invited &e"+inv+"&7."));
@@ -417,7 +424,7 @@ public class CommandHandler implements CommandExecutor{
 										}
 										return CommandOutput.SUCCESS;
 									} else {
-										if (org.getInvited().contains(inv)){
+										if (org.getInvited().contains(pinv.getUniqueId().toString())){
 											org.delInvited(pinv.getUniqueId());
 											plugin.saveConfig();
 											p.sendMessage(ChatColor.translateAlternateColorCodes('&', Organizations.tag+"Revoked &e"+inv+"&7's invite."));
@@ -444,7 +451,7 @@ public class CommandHandler implements CommandExecutor{
 							if (org.isReal){
 								String inv = p.getName();
 								Organization jorg = Organization.getOrganizationByPlayer(plugin.getConfig(), p.getUniqueId(), plugin);
-								if (!org.getPlayers().contains(p.getName())){
+								if (!org.getPlayers().contains(p.getUniqueId().toString())){
 									if (!jorg.isReal){
 										if (org.getInvited().contains(inv)){
 											org.addPlayer(p.getUniqueId());
@@ -487,6 +494,35 @@ public class CommandHandler implements CommandExecutor{
 								}
 							} else {
 								return CommandOutput.NOT_IN_ORG;
+							}
+						} else {
+							return CommandOutput.BAD_ARG_COUNT;
+						}
+					} else {
+						return CommandOutput.NO_PERMISSION;
+					}
+				} else if (args[0].equalsIgnoreCase("info")){
+					if (isPlayer && p.hasPermission("organizations.player.info")){
+						if (args.length==2){
+							Organization target = new Organization(plugin.getConfig(), args[1]);
+							if (target != null && target.isReal){
+								p.sendMessage(ChatColor.translateAlternateColorCodes('&',Organizations.head));
+								p.sendMessage(ChatColor.translateAlternateColorCodes('&',Organizations.tag+
+										"Displaying information for &e"+target.getName()+"&7:"));
+								p.sendMessage(ChatColor.translateAlternateColorCodes('&',Organizations.tag+
+										"&eTag:&7 - "+target.getTag()));
+								p.sendMessage(ChatColor.translateAlternateColorCodes('&',Organizations.tag+
+										"&eDesc:&7 - "+target.getDesc()));
+								p.sendMessage(ChatColor.translateAlternateColorCodes('&',Organizations.tag+
+										"&eOwner:&7 - "+UUID.fromString(target.getOwner())));
+								p.sendMessage(ChatColor.translateAlternateColorCodes('&',Organizations.tag+
+										"&ePlayers:&7 - "+target.getPlayers().size()+" in total, "+
+										target.getOnlinePlayers().size()+" online."));
+								p.sendMessage(ChatColor.translateAlternateColorCodes('&',Organizations.tag+
+										"&eFunds:&7 - "+target.getFunds()));
+								return CommandOutput.SUCCESS;
+							} else {
+								return CommandOutput.BAD_ORG;
 							}
 						} else {
 							return CommandOutput.BAD_ARG_COUNT;
